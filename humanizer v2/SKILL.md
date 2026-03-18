@@ -3,8 +3,13 @@ name: humanizer
 version: 2.2.0
 description: |
  Use this skill to make writing sound like a real person wrote it, not a
-content machine. Strips 24 documented AI writing patterns (slop vocabulary,
-significance inflation, em dashes, bold-colon lists, rule of three, fake depth, sycophantic tone) and replaces them with voice: opinions, rhythm, first-person honesty, messy human edges. Pattern removal is half the job. The other half is adding a pulse. Triggers on: "make this sound human", "rewrite this", "this sounds like AI", "draft this in my voice", or any request to produce or improve written content.
+  content machine. Strips 24 documented AI writing patterns (slop vocabulary,
+  significance inflation, em dashes, bold-colon lists, rule of three, fake
+  depth, sycophantic tone) and replaces them with voice: opinions, rhythm,
+  first-person honesty, messy human edges. Pattern removal is half the job.
+  The other half is adding a pulse. Triggers on: "make this sound human",
+  "rewrite this", "this sounds like AI", "draft this in my voice", or any
+  request to produce or improve written content.
 allowed-tools:
   - Read
   - Write
