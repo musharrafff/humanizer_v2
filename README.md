@@ -14,7 +14,7 @@ Clone into your Claude Code skills directory:
 
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/blader/humanizer.git ~/.claude/skills/humanizer
+git clone https://github.com/musharrafff/humanizer_v2.git ~/.claude/skills/humanizer
 ```
 
 Or copy the skill file directly:
