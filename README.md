@@ -1,19 +1,23 @@
-# Humanizer
+# Humanizer v2
 
-A Claude Code skill that removes signs of AI-generated writing from text, making it sound more natural and human.
+A Claude Code skill that makes AI-assisted writing sound like a person wrote it. Not by running a checklist of patterns to remove, but by teaching the model how good writers actually think.
 
-## Installation
+## What this is
 
-### Recommended (clone directly into Claude Code skills directory)
+Most "humanizer" tools strip AI tells: the em dashes, the rule of three, the "in today's rapidly evolving landscape." That's necessary but insufficient. You end up with writing that doesn't sound like AI but also doesn't sound like anyone.
+
+Humanizer v2 works differently. It encodes a writing philosophy: commit to a point of view, lead with concrete detail, build narrative tension, and close on something specific. The skill doesn't just clean up drafts. It changes how the model approaches writing in the first place.
+
+## Install
+
+Clone into your Claude Code skills directory:
 
 ```bash
 mkdir -p ~/.claude/skills
 git clone https://github.com/blader/humanizer.git ~/.claude/skills/humanizer
 ```
 
-### Manual install/update (only the skill file)
-
-If you already have this repo cloned (or you downloaded `SKILL.md`), copy the skill file into Claude Code’s skills directory:
+Or copy the skill file directly:
 
 ```bash
 mkdir -p ~/.claude/skills/humanizer
@@ -22,121 +26,95 @@ cp SKILL.md ~/.claude/skills/humanizer/
 
 ## Usage
 
-In Claude Code, invoke the skill:
+Ask Claude to humanize text, or just write with the skill active:
 
 ```
-/humanizer
-
-[paste your text here]
+Humanize this: [paste text]
 ```
 
-Or ask Claude to humanize text directly:
-
 ```
-Please humanize this text: [your text]
+Write a post about [topic] — make it sound human
 ```
 
-## Overview
+The skill also activates on triggers like "rewrite this," "this sounds like AI," or "draft this in my voice."
 
-Based on [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) guide, maintained by WikiProject AI Cleanup. This comprehensive guide comes from observations of thousands of instances of AI-generated text.
+## How it works
 
-The skill also includes a final "obviously AI generated" audit pass and a second rewrite, to catch lingering AI-isms in the first draft.
+The skill operates on four principles:
 
-### Key Insight from Wikipedia
+**Concrete beats abstract.** "The user experience has improved significantly" is nothing. "In 2021, moving funds between chains took six manual steps and assumed you already had gas tokens on the destination" is something. Vague writing isn't just weak, it's boring.
 
-> "LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely result that applies to the widest variety of cases."
+**The first sentence is everything.** If it doesn't make the reader lean in, the rest is wasted. A good opener either creates a question the piece answers or states something specific enough that continuing feels necessary.
 
-## 24 Patterns Detected (with Before/After Examples)
+**Narrative over information.** A list of facts is not writing. A list of facts connected by a thread of reasoning, leading somewhere the reader didn't expect, is.
 
-### Content Patterns
+**Perspective is not optional.** A data point sitting alone is a number. A data point with a "which tells you..." attached to it is a post.
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 1 | **Significance inflation** | "marking a pivotal moment in the evolution of..." | "was established in 1989 to collect regional statistics" |
-| 2 | **Notability name-dropping** | "cited in NYT, BBC, FT, and The Hindu" | "In a 2024 NYT interview, she argued..." |
-| 3 | **Superficial -ing analyses** | "symbolizing... reflecting... showcasing..." | Remove or expand with actual sources |
-| 4 | **Promotional language** | "nestled within the breathtaking region" | "is a town in the Gonder region" |
-| 5 | **Vague attributions** | "Experts believe it plays a crucial role" | "according to a 2019 survey by..." |
-| 6 | **Formulaic challenges** | "Despite challenges... continues to thrive" | Specific facts about actual challenges |
+## What it catches
 
-### Language Patterns
+The skill identifies and rewrites nine categories of AI voice killers:
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 7 | **AI vocabulary** | "Additionally... testament... landscape... showcasing" | "also... remain common" |
-| 8 | **Copula avoidance** | "serves as... features... boasts" | "is... has" |
-| 9 | **Negative parallelisms** | "It's not just X, it's Y" | State the point directly |
-| 10 | **Rule of three** | "innovation, inspiration, and insights" | Use natural number of items |
-| 11 | **Synonym cycling** | "protagonist... main character... central figure... hero" | "protagonist" (repeat when clearest) |
-| 12 | **False ranges** | "from the Big Bang to dark matter" | List topics directly |
+| Pattern | What it looks like |
+|---|---|
+| Significance inflation | "marks a pivotal moment in the evolution of..." |
+| Rule of three | "fast, cheap, and secure" |
+| Thrilled-to-announce energy | "We're excited to share..." |
+| Corporate vagueness | "leveraging our ecosystem's synergies" |
+| The -ing tack-on | "...enabling new possibilities, fostering adoption" |
+| Litotes | "not unlike," "not without merit" |
+| Vague attribution | "Industry observers note..." |
+| Listicle brain | Bullet points where prose should be |
+| Generic conclusions | "The future looks bright" |
 
-### Style Patterns
+Plus format-level AI tells: em dash overuse (the skill enforces zero), bold/emoji spam, Title Case headings, sycophantic openers, and cutoff disclaimers.
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 13 | **Em dash overuse** | "institutions—not the people—yet this continues—" | Use commas or periods |
-| 14 | **Boldface overuse** | "**OKRs**, **KPIs**, **BMC**" | "OKRs, KPIs, BMC" |
-| 15 | **Inline-header lists** | "**Performance:** Performance improved" | Convert to prose |
-| 16 | **Title Case Headings** | "Strategic Negotiations And Partnerships" | "Strategic negotiations and partnerships" |
-| 17 | **Emojis** | "🚀 Launch Phase: 💡 Key Insight:" | Remove emojis |
-| 18 | **Curly quotes** | `said “the project”` | `said "the project"` |
+## Format-aware
 
-### Communication Patterns
+The skill adapts its approach based on what you're writing:
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 19 | **Chatbot artifacts** | "I hope this helps! Let me know if..." | Remove entirely |
-| 20 | **Cutoff disclaimers** | "While details are limited in available sources..." | Find sources or remove |
-| 21 | **Sycophantic tone** | "Great question! You're absolutely right!" | Respond directly |
+- **Short-form posts** — First line is the post. One idea. No "hot take:" prefixes.
+- **Threads** — Hook in tweet one, each post advances the idea, last post lands with finality.
+- **Long-form** — Open on tension, not conclusion. Paragraphs develop one idea fully. Subheadings describe, don't perform.
+- **Newsletters** — Subject line conveys a fact or creates genuine curiosity. Register between sharp blog post and warm personal message.
 
-### Filler and Hedging
+## Before and after
 
-| # | Pattern | Before | After |
-|---|---------|--------|-------|
-| 22 | **Filler phrases** | "In order to", "Due to the fact that" | "To", "Because" |
-| 23 | **Excessive hedging** | "could potentially possibly" | "may" |
-| 24 | **Generic conclusions** | "The future looks bright" | Specific plans or facts |
+**Before (AI-generated):**
 
-## Full Example
-
-**Before (AI-sounding):**
-> Great question! Here is an essay on this topic. I hope this helps!
+> AI-assisted coding serves as an enduring testament to the transformative potential of large language models, marking a pivotal moment in the evolution of software development. In today's rapidly evolving technological landscape, these groundbreaking tools are reshaping how engineers ideate, iterate, and deliver, underscoring their vital role in modern workflows.
 >
-> AI-assisted coding serves as an enduring testament to the transformative potential of large language models, marking a pivotal moment in the evolution of software development. In today's rapidly evolving technological landscape, these groundbreaking tools—nestled at the intersection of research and practice—are reshaping how engineers ideate, iterate, and deliver, underscoring their vital role in modern workflows.
->
-> At its core, the value proposition is clear: streamlining processes, enhancing collaboration, and fostering alignment. It's not just about autocomplete; it's about unlocking creativity at scale, ensuring that organizations can remain agile while delivering seamless, intuitive, and powerful experiences to users. The tool serves as a catalyst. The assistant functions as a partner. The system stands as a foundation for innovation.
->
-> Industry observers have noted that adoption has accelerated from hobbyist experiments to enterprise-wide rollouts, from solo developers to cross-functional teams. The technology has been featured in The New York Times, Wired, and The Verge. Additionally, the ability to generate documentation, tests, and refactors showcases how AI can contribute to better outcomes, highlighting the intricate interplay between automation and human judgment.
->
-> - 💡 **Speed:** Code generation is significantly faster, reducing friction and empowering developers.
-> - 🚀 **Quality:** Output quality has been enhanced through improved training, contributing to higher standards.
-> - ✅ **Adoption:** Usage continues to grow, reflecting broader industry trends.
->
-> While specific details are limited based on available information, it could potentially be argued that these tools might have some positive effect. Despite challenges typical of emerging technologies—including hallucinations, bias, and accountability—the ecosystem continues to thrive. In order to fully realize this potential, teams must align with best practices.
->
-> In conclusion, the future looks bright. Exciting times lie ahead as we continue this journey toward excellence. Let me know if you’d like me to expand on any section!
+> At its core, the value proposition is clear: streamlining processes, enhancing collaboration, and fostering alignment. It's not just about autocomplete; it's about unlocking creativity at scale.
 
-**After (Humanized):**
+**After (humanized):**
+
 > AI coding assistants can speed up the boring parts of the job. They're great at boilerplate: config files and the little glue code you don't want to write. They can also help you sketch a test, but you still have to read it.
 >
 > The dangerous part is how confident the suggestions look. I've accepted code that compiled and passed lint, then discovered later it missed the point because I stopped paying attention.
 >
 > If you treat it like autocomplete and review every line, it's useful. If you use it to avoid thinking, it will help you ship bugs faster.
->
-> The only real backstop is tests. Without them, you're mostly judging vibes.
+
+## Writing influences
+
+The skill's voice principles draw from how specific writers operate:
+
+- **Paul Graham** — Abstract claim followed by concrete example within two sentences. Short words. Treats the reader as smart but busy.
+- **Morgan Housel** — Opens with a small story that seems unrelated, then snaps it into focus. Writes to learn, not to report.
+- **Lyn Alden** — Shows her work. Uses data, forms opinions about what it means, doesn't perform neutrality.
+- **Cobie** — Says the thing people are thinking but not saying. No hedging, no softening.
+
+These aren't templates. They're proof that committing to a perspective works across very different subjects and styles.
 
 ## References
 
-- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) - Primary source
-- [WikiProject AI Cleanup](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup) - Maintaining organization
+- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) — Pattern detection foundation
+- [WikiProject AI Cleanup](https://en.wikipedia.org/wiki/Wikipedia:WikiProject_AI_Cleanup) — Ongoing documentation of AI writing patterns
 
-## Version History
+## Version history
 
-- **2.2.0** - Added a final "obviously AI generated" audit + second-pass rewrite prompts
-- **2.1.1** - Fixed pattern #18 example (curly quotes vs straight quotes)
-- **2.1.0** - Added before/after examples for all 24 patterns
-- **2.0.0** - Complete rewrite based on raw Wikipedia article content
-- **1.0.0** - Initial release
+- **2.2** — Zero em dash policy, litotes ban, final audit pass with second rewrite
+- **2.1** — Voice killer definitions expanded, format-specific guidance added
+- **2.0** — Complete rewrite: philosophy-driven approach replacing pattern checklist
+- **1.0** — Initial release based on Wikipedia pattern matching
 
 ## License
 
