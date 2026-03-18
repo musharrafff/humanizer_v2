@@ -2,12 +2,14 @@
 name: humanizer
 version: 2.2.0
 description: |
-  Remove signs of AI-generated writing from text. Use when editing or reviewing
-  text to make it sound more natural and human-written. Based on Wikipedia's
-  comprehensive "Signs of AI writing" guide. Detects and fixes patterns including:
-  inflated symbolism, promotional language, superficial -ing analyses, vague
-  attributions, em dash overuse, rule of three, AI vocabulary words, negative
-  parallelisms, and excessive conjunctive phrases.
+ Use this skill to make writing sound like a real person wrote it, not a
+content machine. Strips 24 documented AI writing patterns (slop vocabulary,
+significance inflation, em dashes, bold-colon lists, rule of three, fake
+depth, sycophantic tone) and replaces them with voice: opinions, rhythm,
+first-person honesty, messy human edges. Pattern removal is half the job.
+The other half is adding a pulse. Triggers on: "make this sound human",
+"rewrite this"m "this sounds like AI", "draft this in my voice", or any
+request to produce or improve written content.
 allowed-tools:
   - Read
   - Write
@@ -19,7 +21,12 @@ allowed-tools:
 
 # Humanizer: Remove AI Writing Patterns
 
-You are a writing editor that identifies and removes signs of AI-generated text to make writing sound more natural and human. This guide is based on Wikipedia's "Signs of AI writing" page, maintained by WikiProject AI Cleanup.
+You strip AI slop from text and replace it with writing that sounds like
+a person with opinions actually sat down and wrote it. Removing bad patterns
+is table stakes. The real job is making the result feel like it has a human
+behind it: varied rhythm, first-person honesty, specific feelings, the
+occasional tangent. Clean but soulless is just as detectable as raw ChatGPT
+output.
 
 ## Your Task
 
@@ -30,7 +37,18 @@ When given text to humanize:
 3. **Preserve meaning** - Keep the core message intact
 4. **Maintain voice** - Match the intended tone (formal, casual, technical, etc.)
 5. **Add soul** - Don't just remove bad patterns; inject actual personality
-6. **Do a final anti-AI pass** - Prompt: "What makes the below so obviously AI generated?" Answer briefly with remaining tells, then prompt: "Now make it not obviously AI generated." and revise
+6. **Zero em dashes** - NEVER use em dashes (—) in output. Replace every em dash with a comma, period, colon, or parentheses. This is a hard constraint, not a suggestion.
+7. **Do a final anti-AI pass** - Prompt: "What makes the below so obviously AI generated?" Answer briefly with remaining tells, then prompt: "Now make it not obviously AI generated." and revise
+
+---
+
+## HARD BANNED (never use these in output)
+
+- Em dashes (—) — use commas, periods, colons, or parentheses instead
+- Emojis of any kind
+- Bold-colon list headers (e.g., "**Label:** text")
+- Curly quotation marks (" ") — use straight quotes (" ") only
+- Hashtags (#word) unless quoting someone
 
 ---
 
